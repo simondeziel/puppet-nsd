@@ -1,11 +1,6 @@
 # @api private
 # This class handles nsd config. Avoid modifying private classes.
-class nsd::config (
-  Stdlib::Absolutepath $cfg_dir   = $nsd::params::cfg_dir,
-  Stdlib::Absolutepath $cfg_file  = $nsd::params::cfg_file,
-  Stdlib::Absolutepath $zones_dir = $nsd::params::zones_dir,
-  Stdlib::Absolutepath $tsig_dir  = $nsd::params::tsig_dir,
-) inherits nsd {
+class nsd::config inherits nsd {
 
   file { $cfg_file:
     content => epp('nsd/nsd.conf.epp'),
@@ -18,10 +13,12 @@ class nsd::config (
   }
   # nsd needs write access in there to save slave zones
   file { $nsd::zones_dir:
-    ensure => directory,
-    owner  => 'nsd',
-    group  => 'nsd',
-    mode   => '0750',
+    ensure  => directory,
+    owner   => 'nsd',
+    group   => 'nsd',
+    mode    => '0750',
+    purge   => $purge_zones_dir,
+    recurse => $purge_zones_dir,
   }
   file { $nsd::tsig_dir:
     ensure => directory,
@@ -29,5 +26,4 @@ class nsd::config (
     group  => 'nsd',
     mode   => '0750',
   }
-
 }

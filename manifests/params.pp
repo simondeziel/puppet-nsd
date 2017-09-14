@@ -11,4 +11,5 @@ class nsd::params {
   $zones_dir          = '/var/lib/nsd/zones'
   $package_ensure     = 'installed'
   $package_names      = ['nsd']
+  $purge_zones_dir    = true
 }
