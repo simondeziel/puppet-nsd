@@ -1,3 +1,6 @@
+<%- | String $name, String $algorithm, String $secret |
+# TSIG
+-%>
 # File managed by Puppet
 key:
   name: "<%= $name %>"
