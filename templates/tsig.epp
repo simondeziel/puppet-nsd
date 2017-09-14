@@ -1,0 +1,5 @@
+# File managed by Puppet
+key:
+  name: "<%= $name %>"
+  algorithm: "<%= $algorithm %>"
+  secret: "<%= $secret %>"
