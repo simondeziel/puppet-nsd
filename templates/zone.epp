@@ -1,0 +1,18 @@
+<%- | String $name, Hash $options |
+# zone
+-%>
+# File managed by Puppet
+zone:
+  name: "<%= $name %>"
+<%
+$options.keys.each |$key| {
+   if $key == 'name' {
+     next()
+   } elsif $options[$key] =~ Array {
+     [$options[$key]].flatten.each |$value| { -%>
+  <%= $key %>: <%= $value %>
+<%   }
+   } else { -%>
+  <%= $key %>: <%= $options[$key] %>
+<% }
+} -%>
