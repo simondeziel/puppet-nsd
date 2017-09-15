@@ -19,21 +19,12 @@ class nsd::config inherits nsd {
   }
 
   file { $cfg_file:
-    content => epp('nsd/nsd.conf.epp'),
+    content => epp('nsd/server.conf.epp', { 'options' => $server_options }),
     owner   => 0,
     group   => 0,
     mode    => '0644',
     notify  => [Exec['nsd-checkconf'],Class['::nsd::service']],
   }
-  # TODO: have that file use the k,v templating
-  #       coupled with good hiera defaults
-  # XXX: nsd::conf will trigger a reload and the nsd::config
-  #      class will notify the service (trigger a restart)
-  #      It should be fine to apply any config change
-  nsd::conf { 'server.conf':
-    content => epp('nsd/server.conf.epp', { 'options' => $server_options }),
-    reload  => false,
-  } ~> Class['::nsd::service']
   file { $cfg_dir:
     ensure  => directory,
     owner   => 0,

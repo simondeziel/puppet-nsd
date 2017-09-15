@@ -11,7 +11,9 @@ class nsd::params {
     'identity'     => 'adns',
     'database'     => '',
     'zonesdir'     => '/var/lib/nsd/zones',
-    'include'      => ['/etc/nsd/nsd.conf.d/*.zone','/etc/nsd/tsig/*.conf'],
+    'include'      => ['/etc/nsd/nsd.conf.d/*.zone',
+                       '/etc/nsd/tsig/*.conf',
+                       '/etc/nsd/nsd.conf.d/*.conf'],
   }
 
   $cfg_file           = '/etc/nsd/nsd.conf'

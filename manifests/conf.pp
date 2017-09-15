@@ -4,16 +4,9 @@ define nsd::conf (
   Enum['absent','present'] $ensure = 'present',
   Optional[String] $content        = undef,
   Optional[String] $source         = undef,
-  Boolean          $reload         = true,
 ) {
   if $ensure == 'present' and ! ($content or $source) {
     fail('nsd::conf requires content or source to be defined when the conf is present')
-  }
-
-  if $reload {
-    $notify = Exec['nsd-checkconf','nsd-reload']
-  } else {
-    $notify = Exec['nsd-checkconf']
   }
 
   # the conf file
@@ -24,6 +17,6 @@ define nsd::conf (
     owner   => 0,
     group   => 0,
     mode    => '0644',
-    notify  => $notify,
+    notify  => Exec['nsd-checkconf','nsd-reload'],
   } 
 }
