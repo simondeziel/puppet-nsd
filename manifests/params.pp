@@ -14,6 +14,7 @@ class nsd::params {
     'include'      => ['/etc/nsd/nsd.conf.d/*.zone',
                        '/etc/nsd/tsig/*.conf',
                        '/etc/nsd/nsd.conf.d/*.conf'],
+    'break'        => 'yes',
   }
 
   $cfg_file           = '/etc/nsd/nsd.conf'

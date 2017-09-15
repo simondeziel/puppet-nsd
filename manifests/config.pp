@@ -1,29 +1,13 @@
 # @api private
 # This class handles nsd config. Avoid modifying private classes.
 class nsd::config inherits nsd {
-  exec { 'nsd-reload':
-    command     => 'service nsd reload',
-    logoutput   => 'on_failure',
-    refreshonly => true,
-    # XXX: quirk to avoid a require => Service['nsd']
-    #      that creates a dependency loop
-    onlyif      => 'service nsd status',
-    require     => Exec['nsd-checkconf'],
-  }
-
-  # Check nsd's configs to avoid bad surprises
-  exec { 'nsd-checkconf':
-    command     => '/usr/sbin/nsd-checkconf /etc/nsd/nsd.conf',
-    logoutput   => 'on_failure',
-    refreshonly => true,
-  }
 
   file { $cfg_file:
     content => epp('nsd/server.conf.epp', { 'options' => $server_options }),
     owner   => 0,
     group   => 0,
     mode    => '0644',
-    notify  => [Exec['nsd-checkconf'],Class['::nsd::service']],
+    notify  => Service['nsd'],
   }
   file { $cfg_dir:
     ensure  => directory,
@@ -32,7 +16,7 @@ class nsd::config inherits nsd {
     mode    => '0755',
     purge   => $purge_cfg_dir,
     recurse => $purge_cfg_dir,
-    notify  => [Exec['nsd-checkconf'],Class['::nsd::service']],
+    notify  => Service['nsd'],
   }
   file { $nsd::tsig_dir:
     ensure  => directory,
@@ -41,7 +25,7 @@ class nsd::config inherits nsd {
     mode    => '0750',
     purge   => $purge_tsig_dir,
     recurse => $purge_tsig_dir,
-    notify  => Exec['nsd-checkconf','nsd-reload'],
+    notify  => Exec['nsd-reload'],
   }
 
   # nsd needs write access in there to save slave zones
@@ -52,6 +36,6 @@ class nsd::config inherits nsd {
     mode    => '0750',
     purge   => $purge_zones_dir,
     recurse => $purge_zones_dir,
-    notify  => Exec['nsd-checkconf','nsd-reload'],
+    notify  => Exec['nsd-reload'],
   }
 }
