@@ -31,7 +31,7 @@ class nsd::config inherits nsd {
   #      class will notify the service (trigger a restart)
   #      It should be fine to apply any config change
   nsd::conf { 'server.conf':
-    content => epp($nsd::server_epp),
+    content => epp('nsd/server.conf.epp', { 'options' => $server_options }),
     reload  => false,
   } ~> Class['::nsd::service']
   file { $cfg_dir:

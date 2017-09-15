@@ -2,7 +2,7 @@
 # Class: nsd
 #
 class nsd (
-  Optional[String] $server_epp    = $nsd::params::server_epp,
+  Hash $server_options            = $nsd::params::server_options,
   Stdlib::Absolutepath $cfg_file  = $nsd::params::cfg_file,
   Stdlib::Absolutepath $cfg_dir   = $nsd::params::cfg_dir,
   Stdlib::Absolutepath $tsig_dir  = $nsd::params::tsig_dir,

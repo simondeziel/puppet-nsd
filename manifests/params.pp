@@ -5,7 +5,15 @@ class nsd::params {
     fail("${module_name} does not support ${::operatingsystem}")
   }
 
-  $server_epp         = 'nsd/server.conf.epp'
+  $server_options     = {
+    'verbosity'    => 2,
+    'hide-version' => 'yes',
+    'identity'     => 'adns',
+    'database'     => '',
+    'zonesdir'     => '/var/lib/nsd/zones',
+    'include'      => ['/etc/nsd/nsd.conf.d/*.zone','/etc/nsd/tsig/*.conf'],
+  }
+
   $cfg_file           = '/etc/nsd/nsd.conf'
   $cfg_dir            = '/etc/nsd/nsd.conf.d'
   $tsig_dir           = '/etc/nsd/tsig'
