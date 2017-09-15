@@ -5,6 +5,7 @@ class nsd::params {
     fail("${module_name} does not support ${::operatingsystem}")
   }
 
+  $server_epp         = 'nsd/server.conf.epp'
   $cfg_file           = '/etc/nsd/nsd.conf'
   $cfg_dir            = '/etc/nsd/nsd.conf.d'
   $tsig_dir           = '/etc/nsd/tsig'

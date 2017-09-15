@@ -2,6 +2,7 @@
 # Class: nsd
 #
 class nsd (
+  Optional[String] $server_epp    = $nsd::params::server_epp,
   Stdlib::Absolutepath $cfg_file  = $nsd::params::cfg_file,
   Stdlib::Absolutepath $cfg_dir   = $nsd::params::cfg_dir,
   Stdlib::Absolutepath $tsig_dir  = $nsd::params::tsig_dir,
@@ -16,8 +17,10 @@ class nsd (
   contain nsd::config
   contain nsd::service
 
+  # do not notify the service class
+  # since we want to be able to do reloads
   Class['::nsd::install']
   -> Class['::nsd::config']
-  ~> Class['::nsd::service']
+  -> Class['::nsd::service']
 }
 

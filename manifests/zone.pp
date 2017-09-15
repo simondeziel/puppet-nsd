@@ -26,11 +26,13 @@ define nsd::zone (
     owner   => 'nsd',
     group   => 'nsd',
     mode    => $mode,
+    notify  => Exec['nsd-reload'],
   }
 
   # the config file for that zone
   file { "${nsd::cfg_dir}/${name}.zone":
     ensure  => $ensure,
     content => epp('nsd/zone.epp', { 'name' => $name, 'options' => $options }),
+    notify  => Exec['nsd-checkconf','nsd-reload'],
   }
 }

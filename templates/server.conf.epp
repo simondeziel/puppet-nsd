@@ -1,0 +1,16 @@
+# File managed by Puppet
+server:
+  verbosity: 3
+  hide-version: yes
+  identity: "adns"
+  database: ""
+
+  # store zones outside of the default /etc/nsd
+  # to support systemd's ProtectSystem=full
+  zonesdir: "<%= $nsd::zones_dir %>"
+
+  # zone config files
+  include: "<%= $nsd::cfg_dir %>/*.zone"
+
+  # keep TSIG secret files in a separated dir
+  include: "<%= $nsd::tsig_dir %>/*.conf"

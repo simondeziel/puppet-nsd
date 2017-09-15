@@ -25,5 +25,6 @@ define nsd::tsig (
     group   => 'nsd',
     mode    => '0640',
     content => epp('nsd/tsig.epp', { 'name' => $name, 'algorithm' => $algorithm, 'secret' => $secret }),
+    notify  => Exec['nsd-reload'],
   }
 }
