@@ -19,7 +19,9 @@ class nsd::params {
   $tsig_dir           = '/etc/nsd/tsig'
   $zones_dir          = '/var/lib/nsd/zones'
   $package_ensure     = 'installed'
-  $package_names      = ['nsd']
+  $package_names      = ['nsd','bind9utils']
+  # strict checking
+  $checkzone_cmd      = '/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail -S fail'
   $purge_cfg_dir      = true
   $purge_tsig_dir     = true
   $purge_zones_dir    = true

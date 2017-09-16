@@ -5,6 +5,7 @@ define nsd::zone (
   Enum['absent','present'] $ensure = 'present',
   Optional[String] $content        = undef,
   Optional[String] $source         = undef,
+  String $checkzone_cmd            = "${nsd::checkzone_cmd} ${name} %",
 ) {
   if $ensure == 'present' and ! $options {
     fail('nsd::zone requires the options hash when the zone is present')
@@ -20,13 +21,14 @@ define nsd::zone (
   
   # the zone file itself
   file { "${nsd::zones_dir}/${name}":
-    ensure  => $ensure,
-    content => $content,
-    source  => $source,
-    owner   => 'nsd',
-    group   => 'nsd',
-    mode    => $mode,
-    notify  => Exec['nsd-reload'],
+    ensure       => $ensure,
+    content      => $content,
+    source       => $source,
+    owner        => 'nsd',
+    group        => 'nsd',
+    mode         => $mode,
+    notify       => Exec['nsd-reload'],
+    validate_cmd => $checkzone_cmd,
   }
 
   # the config file for that zone
