@@ -30,7 +30,7 @@ define nsd::zone (
   }
 
   # the config file for that zone
-  file { "${nsd::cfg_dir}/${name}.zone":
+  file { "${nsd::cfg_dir}/zone-${name}.conf":
     ensure  => $ensure,
     content => epp('nsd/zone.epp', { 'name' => $name, 'options' => $options }),
     notify  => Exec['nsd-reload'],

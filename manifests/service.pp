@@ -7,6 +7,9 @@ class nsd::service inherits nsd {
     logoutput   => 'on_failure',
     refreshonly => true,
     onlyif      => "/bin/systemctl is-active nsd && /usr/sbin/nsd-checkconf ${cfg_file}",
+    # XXX: in case both a reload and a restart get scheduled in a given run.
+    #      Ensures to reload (for no good but no harm) first then restart.
+    before      => Service['nsd'],
   }
 
   # XXX: makes sure that restart/stop is only
