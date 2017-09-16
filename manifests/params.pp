@@ -22,6 +22,7 @@ class nsd::params {
   $package_names      = ['nsd','bind9utils']
   # strict checking
   $checkzone_cmd      = '/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail -S fail'
+  $backup_zone        = false
   $purge_cfg_dir      = true
   $purge_tsig_dir     = true
   $purge_zones_dir    = true
