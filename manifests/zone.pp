@@ -14,9 +14,9 @@ define nsd::zone (
   # content or source are used for "master" zones
   # which shouldn't be writeable by nsd
   if $content or $source {
-    $mode = '0440'
+    $owner = 0
   } else {
-    $mode = '0640'
+    $owner = 'nsd'
   }
   
   # the zone file itself
@@ -24,9 +24,9 @@ define nsd::zone (
     ensure       => $ensure,
     content      => $content,
     source       => $source,
-    owner        => 'nsd',
+    owner        => $owner,
     group        => 'nsd',
-    mode         => $mode,
+    mode         => '0644',
     notify       => Exec['nsd-reload'],
     validate_cmd => $checkzone_cmd,
   }
