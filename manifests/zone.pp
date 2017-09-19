@@ -28,15 +28,14 @@ define nsd::zone (
     owner        => $owner,
     group        => 'nsd',
     mode         => '0644',
-    notify       => Exec['nsd-reload'],
     validate_cmd => $checkzone_cmd,
     backup       => $backup_zone,
   }
 
   # the config file for that zone
-  file { "${nsd::cfg_dir}/zone-${name}.conf":
+  nsd::conf { "zone-${name}.conf":
     ensure  => $ensure,
     content => epp('nsd/zone.epp', { 'name' => $name, 'options' => $options }),
-    notify  => Exec['nsd-reload'],
+    require => File["${nsd::zones_dir}/${name}"],
   }
 }

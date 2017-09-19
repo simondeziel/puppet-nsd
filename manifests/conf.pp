@@ -17,7 +17,6 @@ define nsd::conf (
     owner   => 0,
     group   => 0,
     mode    => '0644',
-    before  => Class['::nsd::service'],
     notify  => Exec['nsd-reload'],
   } 
 }

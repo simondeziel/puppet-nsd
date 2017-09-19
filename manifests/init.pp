@@ -17,12 +17,13 @@ class nsd (
 ) inherits nsd::params {
   contain nsd::install
   contain nsd::config
+  contain nsd::exec
   contain nsd::service
 
   # do not notify the service class
   # since we want to be able to do reloads
   Class['::nsd::install']
   -> Class['::nsd::config']
+  -> Class['::nsd::exec']
   -> Class['::nsd::service']
 }
-

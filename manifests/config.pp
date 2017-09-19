@@ -7,7 +7,8 @@ class nsd::config inherits nsd {
     owner   => 0,
     group   => 0,
     mode    => '0644',
-    notify  => Service['nsd'],
+    # some configs need a restart to apply
+    notify  => Exec['nsd-restart'],
   }
   file { $cfg_dir:
     ensure  => directory,
@@ -16,7 +17,7 @@ class nsd::config inherits nsd {
     mode    => '0755',
     purge   => $purge_cfg_dir,
     recurse => $purge_cfg_dir,
-    notify  => Service['nsd'],
+    notify  => Exec['nsd-reload'],
   }
   file { $nsd::tsig_dir:
     ensure  => directory,
