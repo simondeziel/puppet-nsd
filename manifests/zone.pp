@@ -30,6 +30,7 @@ define nsd::zone (
     mode         => '0644',
     validate_cmd => $checkzone_cmd,
     backup       => $backup_zone,
+    notify       => Exec['nsd-reload'],
   }
 
   # the config file for that zone
