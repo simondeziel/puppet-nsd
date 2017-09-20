@@ -5,13 +5,14 @@
 server:
 <%
 $options.keys.each |$key| {
-   if $options[$key] =~ Integer or $options[$key] =~ Enum['yes','no'] { -%>
-  <%= $key %>: <%= $options[$key] %>
-<% } elsif $options[$key] =~ Array {
-     [$options[$key]].flatten.each |$value| { -%>
-  <%= $key %>: "<%= $value %>"
+   $value = $options[$key]
+   if $value =~ Integer or $value =~ Enum['yes','no'] { -%>
+  <%= $key %>: <%= $value %>
+<% } elsif $value =~ Array {
+     $value.flatten.each |$v| { -%>
+  <%= $key %>: "<%= $v %>"
 <%   }
    } else { -%>
-  <%= $key %>: "<%= $options[$key] %>"
+  <%= $key %>: "<%= $value %>"
 <% }
 } -%>
