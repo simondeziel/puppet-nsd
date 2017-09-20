@@ -3,7 +3,7 @@
 class nsd::config inherits nsd {
 
   file { $cfg_file:
-    content => epp('nsd/server.conf.epp', { 'options' => $server_options }),
+    content => epp('nsd/nsd.conf.epp', { 'options' => $server_options }),
     owner   => 0,
     group   => 0,
     mode    => '0644',
