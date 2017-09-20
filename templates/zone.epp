@@ -6,13 +6,14 @@ zone:
   name: "<%= $name %>"
 <%
 $options.keys.each |$key| {
+   $v = $options[$key]
    if $key == 'name' {
      next()
-   } elsif $options[$key] =~ Array {
-     [$options[$key]].flatten.each |$value| { -%>
+   } elsif $v =~ Array {
+     $v.flatten.each |$value| { -%>
   <%= $key %>: <%= $value %>
 <%   }
    } else { -%>
-  <%= $key %>: <%= $options[$key] %>
+  <%= $key %>: <%= $v %>
 <% }
 } -%>
