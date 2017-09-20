@@ -21,10 +21,11 @@ define nsd::tsig (
   Enum['present','absent'] $ensure = present
 ) {
   file { "${nsd::tsig_dir}/${name}.conf":
-    owner   => 0,
-    group   => 'nsd',
-    mode    => '0640',
-    content => epp('nsd/tsig.epp', { 'name' => $name, 'algorithm' => $algorithm, 'secret' => $secret }),
-    notify  => Exec['nsd-reload'],
+    owner     => 0,
+    group     => 'nsd',
+    mode      => '0640',
+    content   => epp('nsd/tsig.epp', { 'name' => $name, 'algorithm' => $algorithm, 'secret' => $secret }),
+    notify    => Exec['nsd-reload'],
+    show_diff => false,
   }
 }
