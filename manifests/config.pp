@@ -19,7 +19,7 @@ class nsd::config inherits nsd {
     recurse => $purge_cfg_dir,
     notify  => Exec['nsd-reload'],
   }
-  file { $nsd::tsig_dir:
+  file { $tsig_dir:
     ensure  => directory,
     owner   => 0,
     group   => 'nsd',
@@ -30,7 +30,7 @@ class nsd::config inherits nsd {
   }
 
   # nsd needs write access in there to save slave zones
-  file { $nsd::zones_dir:
+  file { $zones_dir:
     ensure  => directory,
     owner   => 'nsd',
     group   => 'nsd',
