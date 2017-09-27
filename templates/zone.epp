@@ -1,13 +1,14 @@
-<%- | String $name, Hash $options |
+<%- | String $name, String $zonefile, Hash $options |
 # zone
 -%>
 # File managed by Puppet
 zone:
   name: "<%= $name %>"
+  zonefile: "<%= $zonefile %>"
 <%
 $options.keys.each |$key| {
    $v = $options[$key]
-   if $key == 'name' {
+   if $key == 'name' or $key == 'zonefile' {
      next()
    } elsif $v =~ Array {
      $v.flatten.each |$value| { -%>

@@ -12,18 +12,25 @@ define nsd::zone (
     fail('nsd::zone requires the options hash when the zone is present')
   }
 
+  $zonename = $name ? {
+    '.'     => 'root', # for those hosting a copy of "." (RFC 7706)
+    default => $name,
+  }
+  $zoneconf = "zone-${zonename}.conf"
+  $zonefile = "${nsd::zones_dir}/${zonename}"
+
   # zone file
   if $ensure == 'absent' {
     # when removing a zone file, no need to reload
     # this will be done by the associated config file
-    file { "${nsd::zones_dir}/${name}":
+    file { $zonefile:
       ensure => $ensure,
       backup => $backup_zone,
     }
   } elsif $content or $source {
     # content or source indicate a "master" zone
     # shouldn't be writable by nsd (hence owner => 0)
-    file { "${nsd::zones_dir}/${name}":
+    file { $zonefile:
       ensure       => file,
       content      => $content,
       source       => $source,
@@ -38,7 +45,7 @@ define nsd::zone (
     # otherwise it's a slave zone for which the file
     # shouldn't be managed (hence the ensure => undef)
     # nsd will write those itself at periodic intervals
-    file { "${nsd::zones_dir}/${name}":
+    file { $zonefile:
       ensure => undef,
       owner  => 'nsd',
       group  => 'nsd',
@@ -48,13 +55,13 @@ define nsd::zone (
 
   # config file associated with the zone
   if $ensure == 'present' {
-    nsd::conf { "zone-${name}.conf":
+    nsd::conf { $zoneconf:
       ensure  => $ensure,
-      content => epp('nsd/zone.epp', { 'name' => $name, 'options' => $options }),
-      require => File["${nsd::zones_dir}/${name}"],
+      content => epp('nsd/zone.epp', { 'name' => $name, 'zonefile' => $zonefile, 'options' => $options }),
+      require => File[$zonefile],
     }
   } else {
-    nsd::conf { "zone-${name}.conf":
+    nsd::conf { $zoneconf:
       ensure  => $ensure,
     }
   }
