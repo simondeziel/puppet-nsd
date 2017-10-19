@@ -8,6 +8,12 @@ class nsd::exec inherits nsd {
     refreshonly => true,
     onlyif      => "/bin/systemctl is-active nsd && /usr/sbin/nsd-checkconf ${cfg_file}",
   }
+  exec { 'nsd-reconfig':
+    command     => '/usr/sbin/nsd-control reconfig',
+    logoutput   => 'on_failure',
+    refreshonly => true,
+    onlyif      => "/bin/systemctl is-active nsd && /usr/sbin/nsd-checkconf ${cfg_file}",
+  }
 
   exec { 'nsd-restart':
     command     => "/usr/sbin/nsd-checkconf ${cfg_file}",
