@@ -10,7 +10,7 @@ Manages NSD server via Puppet.
 To run NSD with special options and host the slave zone `example.com` XFR'ed using TSIG:
 
 
-```
+```puppet
   class { 'nsd':
     server_options => {
       'verbosity' => 2,
@@ -31,7 +31,7 @@ To run NSD with special options and host the slave zone `example.com` XFR'ed usi
 
 To host the master zone `.` (aka the root zone) following RFC 7706:
 
-```
+```puppet
   class { 'nsd': }
   nsd::zone { '.':
     options => {
