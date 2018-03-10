@@ -5,7 +5,7 @@ define nsd::zone (
   Enum['absent','present'] $ensure     = 'present',
   Optional[String] $content            = undef,
   Optional[String] $source             = undef,
-  String $checkzone_cmd                = "${nsd::checkzone_cmd} ${name} %",
+  Optional[String] $checkzone_cmd      = "${nsd::checkzone_cmd} ${name} %",
   Variant[Boolean,String] $backup_zone = $nsd::backup_zone,
 ) {
   if $ensure == 'present' and ! $options {
