@@ -5,7 +5,7 @@ define nsd::zone (
   Enum['absent','present'] $ensure     = 'present',
   Optional[String] $content            = undef,
   Optional[String] $source             = undef,
-  Optional[String] $checkzone_cmd      = "${nsd::checkzone_cmd} ${name} %",
+  Optional[String] $checkzone_cmd      = $nsd::checkzone_cmd,
   Variant[Boolean,String] $backup_zone = $nsd::backup_zone,
 ) {
   if $ensure == 'present' and ! $options {
@@ -28,6 +28,13 @@ define nsd::zone (
       backup => $backup_zone,
     }
   } elsif $content or $source {
+
+    if $checkzone_cmd {
+      $validate_cmd = "${checkzone_cmd} ${name} %"
+    } else {
+      $validate_cmd = undef
+    }
+
     # content or source indicate a "master" zone
     # shouldn't be writable by nsd (hence owner => 0)
     file { $zonefile:
@@ -37,7 +44,7 @@ define nsd::zone (
       owner        => 0,
       group        => 'nsd',
       mode         => '0644',
-      validate_cmd => $checkzone_cmd,
+      validate_cmd => $validate_cmd,
       backup       => $backup_zone,
       notify       => Exec['nsd-reload'],
     }
