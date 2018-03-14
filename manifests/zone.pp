@@ -1,17 +1,13 @@
 # Define: nsd::zone
 #
 define nsd::zone (
-  Optional[Hash] $options              = undef,
+  Hash $options                        = {},
   Enum['absent','present'] $ensure     = 'present',
   Optional[String] $content            = undef,
   Optional[String] $source             = undef,
   Optional[String] $checkzone_cmd      = $nsd::checkzone_cmd,
   Variant[Boolean,String] $backup_zone = $nsd::backup_zone,
 ) {
-  if $ensure == 'present' and ! $options {
-    fail('nsd::zone requires the options hash when the zone is present')
-  }
-
   $zonename = $name ? {
     '.'     => 'root', # for those hosting a copy of "." (RFC 7706)
     default => $name,
