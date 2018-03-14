@@ -9,7 +9,7 @@ define nsd::zone (
   Variant[Boolean,String] $backup_zone = $nsd::backup_zone,
 ) {
   $zonename = $name ? {
-    '.'     => 'root', # for those hosting a copy of "." (RFC 7706)
+    '.'     => 'root', # to host a copy of "." (RFC 7706)
     default => $name,
   }
   $zoneconf = "zone-${zonename}.conf"
