@@ -39,4 +39,13 @@ class nsd::config inherits nsd {
     recurse => $purge_zones_dir,
     notify  => Exec['nsd-reload'],
   }
+
+  file { $fragments_dir:
+    ensure  => directory,
+    owner   => 'nsd',
+    group   => 'nsd',
+    mode    => '0750',
+    purge   => $purge_fragments_dir,
+    recurse => $purge_fragments_dir,
+  }
 }
