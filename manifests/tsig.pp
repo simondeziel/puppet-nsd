@@ -8,6 +8,10 @@
 # $algorithm = Defined algorithm of the key
 # $secret = shared secret of the key
 #
+# To generate the secret:
+#  dnssec-keygen -a HMAC-SHA512 -b 512 -n HOST foo
+#  awk '/^Key:/ {print $2}' Kfoo*.private
+#
 # Usage:
 #
 # nsd::tsig { 'ns3':
